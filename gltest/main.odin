@@ -93,20 +93,22 @@ init :: proc() -> (ok: bool) {
 
 	// Own drawing code here
     vs := []f32{
-        -0.5,-0.5, 0, // 0 left down
-        -0.5, 0.5, 0, // 1 left up
-         0.5, 0.5, 0, // 2 right up
-         0.5,-0.5, 0, // 3 right down
+      // position      color
+        -0.5,-0.5, 0,  0.7, 0.0, 0.0, // 0 left down
+        -0.5, 0.5, 0,  0.0, 0.7, 0.0, // 1 left up
+         0.5, 0.5, 0,  0.0, 0.0, 0.7, // 2 right up
+         0.5,-0.5, 0,  0.0, 0.0, 0.0, // 3 right down
 
-         0.6,   0, 0,
-         0.6, 0.4, 0,
-         0.9,   0, 0,
+         0.6,   0, 0,  0.7, 0.0, 0.0,
+         0.6, 0.4, 0,  0.0, 0.7, 0.0,
+         0.9,   0, 0,  0.0, 0.0, 0.7,
     }
+    stride :: 6*size_of(f32)
 
     indices := []u32{
         0, 1, 2,
         0, 2, 3,
-        4, 5, 6
+        4, 5, 6,
     }
 
     gl.GenVertexArrays(1, &VAO)
@@ -122,9 +124,13 @@ init :: proc() -> (ok: bool) {
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
     gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, size_of(u32)*len(indices), raw_data(indices), gl.STATIC_DRAW)
 
-    posLoc := u32(gl.GetAttribLocation(SHADER_PROGRAM, "pos"))
-    gl.VertexAttribPointer(posLoc, 3, gl.FLOAT, false, 3*size_of(f32), 0)
+    posLoc :: 0
+    gl.VertexAttribPointer(posLoc, 3, gl.FLOAT, false, stride, 0)
     gl.EnableVertexAttribArray(posLoc)
+
+    colLoc :: 1
+    gl.VertexAttribPointer(colLoc, 3, gl.FLOAT, false, stride, 3*size_of(f32))
+    gl.EnableVertexAttribArray(colLoc)
 
     // gl.BindBuffer(gl.ARRAY_BUFFER, 0)
     // gl.BindVertexArray(0)
