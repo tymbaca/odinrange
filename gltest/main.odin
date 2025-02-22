@@ -5,6 +5,7 @@ import "core:c"
 import gl "vendor:OpenGL"
 import "vendor:glfw"
 import "base:runtime"
+import rl "vendor:raylib"
 // import "vendor:OpenGL"
 
 PROGRAMNAME :: "Program"
@@ -21,6 +22,7 @@ _running: b32 = true
 SHADER_PROGRAM: u32
 VAO: u32
 VBO: u32
+EBO: u32
 
 main :: proc() {
 	if !glfw.Init() {
@@ -87,24 +89,35 @@ init :: proc() -> (ok: bool) {
 
 	// Own drawing code here
     vs := []f32{
-        -0.5, -0.5, 0,
-         0.5, -0.5, 0,
-           0,  0.5, 0,
+        -0.5,-0.5, 0, // 0 left down
+        -0.5, 0.5, 0, // 1 left up
+         0.5, 0.5, 0, // 2 right up
+         0.5,-0.5, 0, // 3 right down
+    }
+
+    indices := []u32{
+        0, 1, 2,
+        0, 2, 3,
     }
 
     gl.GenVertexArrays(1, &VAO)
     gl.BindVertexArray(VAO)
 
     gl.GenBuffers(1, &VBO)
+    gl.GenBuffers(1, &EBO)
 
 
     fmt.println(size_of(f32)*len(vs))
     gl.BindBuffer(gl.ARRAY_BUFFER, VBO)
     gl.BufferData(gl.ARRAY_BUFFER, size_of(f32)*len(vs), raw_data(vs), gl.STATIC_DRAW)
+
+    gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
+    gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, size_of(u32)*len(indices), raw_data(indices), gl.STATIC_DRAW)
+
     gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 3*size_of(f32), 0)
     gl.EnableVertexAttribArray(0)
 
-    gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+    // gl.BindBuffer(gl.ARRAY_BUFFER, 0)
     // gl.BindVertexArray(0)
 
     return true
@@ -124,7 +137,9 @@ draw :: proc() {
 
     gl.UseProgram(SHADER_PROGRAM)
     gl.BindVertexArray(VAO)
-    gl.DrawArrays(gl.TRIANGLES, 0, 3)
+    // gl.DrawArrays(gl.TRIANGLES, 0, 3)
+    gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
+    gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, auto_cast uintptr(0))
 }
 
 exit :: proc() {
