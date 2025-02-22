@@ -28,21 +28,30 @@ use :: proc(p: Program) {
 	gl.UseProgram(p.id)
 }
 
-set :: proc(p: Program, name: string, val: $T) {
-	context.allocator = context.temp_allocator
-	defer free_all(context.temp_allocator)
-	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
+set :: proc{ set_float, set_vec2f, set_vec3f, set_vec4f,  }
 
-	switch typeid_of(type_of(val)) {
-    case f32:
-		gl.Uniform1f(loc, val)
-	case [2]f32:
-		gl.Uniform2f(loc, val.x, val.y)
-	case [3]f32:
-		gl.Uniform3f(loc, val.x, val.y, val.z)
-	case [4]f32:
-		gl.Uniform4f(loc, val.x, val.y, val.z, val.w)
-	}
+set_float :: proc(p: Program, name: string, val: f32) {
+	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
+	defer free_all(context.temp_allocator)
+    gl.Uniform1f(loc, val)
+}
+
+set_vec2f :: proc(p: Program, name: string, val: [2]f32) {
+	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
+	defer free_all(context.temp_allocator)
+    gl.Uniform2f(loc, val.x, val.y)
+}
+
+set_vec3f :: proc(p: Program, name: string, val: [3]f32) {
+	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
+	defer free_all(context.temp_allocator)
+    gl.Uniform3f(loc, val.x, val.y, val.z)
+}
+
+set_vec4f :: proc(p: Program, name: string, val: [4]f32) {
+	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
+	defer free_all(context.temp_allocator)
+    gl.Uniform4f(loc, val.x, val.y, val.z, val.w)
 }
 
 shader_from_filename :: proc(

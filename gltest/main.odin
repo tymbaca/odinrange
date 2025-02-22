@@ -8,6 +8,7 @@ import "base:runtime"
 import rl "vendor:raylib"
 import "core:math"
 import "core:time"
+import "shader/program"
 // import "vendor:OpenGL"
 
 PROGRAMNAME :: "Program"
@@ -17,11 +18,11 @@ HEIGHT :: 512
 GL_MAJOR_VERSION: c.int : 4
 GL_MINOR_VERSION :: 1
 
-VERTEX_SHADER :: string(#load("shader/vertex.glsl"))
-FRAGMENT_SHADER :: string(#load("shader/fragment.glsl"))
+VERTEX_SHADER :: "shader/vertex.glsl"
+FRAGMENT_SHADER :: "shader/fragment.glsl"
+PROGRAM: program.Program
 
 _running: b32 = true
-SHADER_PROGRAM: u32
 VAO: u32
 VBO: u32
 EBO: u32
@@ -82,14 +83,7 @@ init :: proc() -> (ok: bool) {
     fmt.println("OpenGL Version: ", gl.GetString(gl.VERSION))
     fmt.println("GLSL Version: ", gl.GetString(gl.SHADING_LANGUAGE_VERSION))
 
-	// Own initialization code there
-    vertex_shader := gl.compile_shader_from_source(VERTEX_SHADER, .VERTEX_SHADER) or_return
-    defer gl.DeleteShader(vertex_shader)
-
-    fragment_shader := gl.compile_shader_from_source(FRAGMENT_SHADER, .FRAGMENT_SHADER) or_return
-    defer gl.DeleteShader(fragment_shader)
-
-    SHADER_PROGRAM = gl.create_and_link_program({vertex_shader, fragment_shader}) or_return
+    PROGRAM = program.new(VERTEX_SHADER, FRAGMENT_SHADER) or_return
 
 	// Own drawing code here
     vs := []f32{
@@ -152,14 +146,13 @@ draw :: proc() {
 	gl.Clear(gl.COLOR_BUFFER_BIT)
 
 
-    gl.UseProgram(SHADER_PROGRAM)
+    program.use(PROGRAM)
 
     color: [4]f32
     color.r = auto_cast (math.sin(time.duration_seconds(time.since(START))) + 1) * 0.5
-    gl.Uniform4f(gl.GetUniformLocation(SHADER_PROGRAM, "color"), color.r, color.g, color.b, color.a)
+    program.set(PROGRAM, "color", color)
 
     gl.BindVertexArray(VAO)
-    // gl.DrawArrays(gl.TRIANGLES, 0, 3)
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
     gl.DrawElements(gl.TRIANGLES, 9, gl.UNSIGNED_INT, nil)
 }
