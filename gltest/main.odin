@@ -90,14 +90,14 @@ init :: proc() -> (ok: bool) {
 
 	// Own drawing code here
     vs := []f32{
-        -0.5,-0.5, 0, // 0 left down
-        -0.5, 0.5, 0, // 1 left up
-         0.5, 0.5, 0, // 2 right up
-         0.5,-0.5, 0, // 3 right down
+        -0.5,-0.5, 0, // 1, // 0 left down
+        -0.5, 0.5, 0, // 1, // 1 left up
+         0.5, 0.5, 0, // 1, // 2 right up
+         0.5,-0.5, 0, // 1, // 3 right down
 
-         0.6, 0, 0,
-         0.6, 0.4, 0,
-         0.9, 0, 0,
+         0.6,   0, 0, // 1,
+         0.6, 0.4, 0, // 1,
+         0.9,   0, 0, // 1,
     }
 
     indices := []u32{
@@ -119,13 +119,18 @@ init :: proc() -> (ok: bool) {
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
     gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, size_of(u32)*len(indices), raw_data(indices), gl.STATIC_DRAW)
 
-    gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 3*size_of(f32), 0)
-    gl.EnableVertexAttribArray(0)
+    posLoc := u32(gl.GetAttribLocation(SHADER_PROGRAM, "pos"))
+    gl.VertexAttribPointer(posLoc, 3, gl.FLOAT, false, 3*size_of(f32), 0)
+    gl.EnableVertexAttribArray(posLoc)
+
+    // alterLoc := u32(gl.GetAttribLocation(SHADER_PROGRAM, "alter"))
+    // gl.VertexAttribPointer(alterLoc, 1, gl.FLOAT, false, 4*size_of(f32), 0)
+    // gl.EnableVertexAttribArray(alterLoc)
 
     // gl.BindBuffer(gl.ARRAY_BUFFER, 0)
     // gl.BindVertexArray(0)
 
-    gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
+    // gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
 
     return true
 }
