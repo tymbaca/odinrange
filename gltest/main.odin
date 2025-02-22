@@ -86,19 +86,21 @@ init :: proc() -> (ok: bool) {
     SHADER_PROGRAM = gl.create_and_link_program({vertex_shader, fragment_shader}) or_return
 
 	// Own drawing code here
-    vs := [?]f32{
+    vs := []f32{
         -0.5, -0.5, 0,
          0.5, -0.5, 0,
            0,  0.5, 0,
     }
 
     gl.GenVertexArrays(1, &VAO)
-    gl.GenBuffers(1, &VBO)
-
     gl.BindVertexArray(VAO)
 
+    gl.GenBuffers(1, &VBO)
+
+
+    fmt.println(size_of(f32)*len(vs))
     gl.BindBuffer(gl.ARRAY_BUFFER, VBO)
-    gl.BufferData(gl.ARRAY_BUFFER, size_of(f32), &vs, gl.STATIC_DRAW)
+    gl.BufferData(gl.ARRAY_BUFFER, size_of(f32)*len(vs), raw_data(vs), gl.STATIC_DRAW)
     gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 3*size_of(f32), 0)
     gl.EnableVertexAttribArray(0)
 
