@@ -9,7 +9,6 @@ import rl "vendor:raylib"
 import "core:math"
 import "core:time"
 import "shader/program"
-// import "vendor:OpenGL"
 
 PROGRAMNAME :: "Program"
 WIDTH :: 512
@@ -78,84 +77,10 @@ main :: proc() {
 
 }
 
-
-init :: proc() -> (ok: bool) {
-    fmt.println("OpenGL Version: ", gl.GetString(gl.VERSION))
-    fmt.println("GLSL Version: ", gl.GetString(gl.SHADING_LANGUAGE_VERSION))
-
-    PROGRAM = program.new(VERTEX_SHADER, FRAGMENT_SHADER) or_return
-
-	// Own drawing code here
-    vs := []f32{
-      // position      color
-        -0.5,-0.5, 0,  0.7, 0.0, 0.0, // 0 left down
-        -0.5, 0.5, 0,  0.0, 0.7, 0.0, // 1 left up
-         0.5, 0.5, 0,  0.0, 0.0, 0.7, // 2 right up
-         0.5,-0.5, 0,  0.0, 0.0, 0.0, // 3 right down
-
-         0.6,   0, 0,  0.7, 0.0, 0.0,
-         0.6, 0.4, 0,  0.0, 0.7, 0.0,
-         0.9,   0, 0,  0.0, 0.0, 0.7,
-    }
-    stride :: 6*size_of(f32)
-
-    indices := []u32{
-        0, 1, 2,
-        0, 2, 3,
-        4, 5, 6,
-    }
-
-    gl.GenVertexArrays(1, &VAO)
-    gl.BindVertexArray(VAO)
-
-    gl.GenBuffers(1, &VBO)
-    gl.GenBuffers(1, &EBO)
-
-    fmt.println(size_of(f32)*len(vs))
-    gl.BindBuffer(gl.ARRAY_BUFFER, VBO)
-    gl.BufferData(gl.ARRAY_BUFFER, size_of(f32)*len(vs), raw_data(vs), gl.STATIC_DRAW)
-
-    gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
-    gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, size_of(u32)*len(indices), raw_data(indices), gl.STATIC_DRAW)
-
-    posLoc :: 0
-    gl.VertexAttribPointer(posLoc, 3, gl.FLOAT, false, stride, 0)
-    gl.EnableVertexAttribArray(posLoc)
-
-    colLoc :: 1
-    gl.VertexAttribPointer(colLoc, 3, gl.FLOAT, false, stride, 3*size_of(f32))
-    gl.EnableVertexAttribArray(colLoc)
-
-    // gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-    // gl.BindVertexArray(0)
-
-    // gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
-
-    return true
-}
-
 update :: proc() {
 	// Own update code here
 }
 
-draw :: proc() {
-	// Set the opengl clear color
-	// 0-1 rgba values
-	gl.ClearColor(0.2, 0.3, 0.3, 1.0)
-	// Clear the screen with the set clearcolor
-	gl.Clear(gl.COLOR_BUFFER_BIT)
-
-
-    program.use(PROGRAM)
-
-    color: [4]f32
-    color.r = auto_cast (math.sin(time.duration_seconds(time.since(START))) + 1) * 0.5
-    program.set(PROGRAM, "color", color)
-
-    gl.BindVertexArray(VAO)
-    gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
-    gl.DrawElements(gl.TRIANGLES, 9, gl.UNSIGNED_INT, nil)
-}
 
 exit :: proc() {
 	// Own termination code here
