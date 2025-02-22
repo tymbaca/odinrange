@@ -6,6 +6,7 @@ import gl "vendor:OpenGL"
 import "vendor:glfw"
 import "base:runtime"
 import rl "vendor:raylib"
+import "core:math"
 // import "vendor:OpenGL"
 
 PROGRAMNAME :: "Program"
@@ -93,11 +94,16 @@ init :: proc() -> (ok: bool) {
         -0.5, 0.5, 0, // 1 left up
          0.5, 0.5, 0, // 2 right up
          0.5,-0.5, 0, // 3 right down
+
+         0.6, 0, 0,
+         0.6, 0.4, 0,
+         0.9, 0, 0,
     }
 
     indices := []u32{
         0, 1, 2,
         0, 2, 3,
+        4, 5, 6
     }
 
     gl.GenVertexArrays(1, &VAO)
@@ -105,7 +111,6 @@ init :: proc() -> (ok: bool) {
 
     gl.GenBuffers(1, &VBO)
     gl.GenBuffers(1, &EBO)
-
 
     fmt.println(size_of(f32)*len(vs))
     gl.BindBuffer(gl.ARRAY_BUFFER, VBO)
@@ -119,6 +124,8 @@ init :: proc() -> (ok: bool) {
 
     // gl.BindBuffer(gl.ARRAY_BUFFER, 0)
     // gl.BindVertexArray(0)
+
+    gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
 
     return true
 }
@@ -139,7 +146,7 @@ draw :: proc() {
     gl.BindVertexArray(VAO)
     // gl.DrawArrays(gl.TRIANGLES, 0, 3)
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
-    gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, auto_cast uintptr(0))
+    gl.DrawElements(gl.TRIANGLES, 9, gl.UNSIGNED_INT, nil)
 }
 
 exit :: proc() {
