@@ -7,6 +7,7 @@ import "vendor:glfw"
 import "base:runtime"
 import rl "vendor:raylib"
 import "core:math"
+import "core:time"
 // import "vendor:OpenGL"
 
 PROGRAMNAME :: "Program"
@@ -24,6 +25,8 @@ SHADER_PROGRAM: u32
 VAO: u32
 VBO: u32
 EBO: u32
+
+START := time.now()
 
 main :: proc() {
 	if !glfw.Init() {
@@ -144,6 +147,11 @@ draw :: proc() {
 
 
     gl.UseProgram(SHADER_PROGRAM)
+
+    color: [4]f32
+    color.r = auto_cast (math.sin(time.duration_seconds(time.since(START))) + 1) * 0.5
+    gl.Uniform4f(gl.GetUniformLocation(SHADER_PROGRAM, "color"), color.r, color.g, color.b, color.a)
+
     gl.BindVertexArray(VAO)
     // gl.DrawArrays(gl.TRIANGLES, 0, 3)
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
