@@ -20,9 +20,13 @@ draw :: proc() {
 
     program.use(PROGRAM)
 
+    factor := math.sin(time.duration_seconds(time.since(START)))
+
     color: [4]f32
-    color.r = auto_cast (math.sin(time.duration_seconds(time.since(START))) + 1) * 0.5
+    color.r = auto_cast (factor + 1) * 0.5
     program.set(PROGRAM, "color", color)
+
+    program.set(PROGRAM, "globalScale", f32(factor))
 
     gl.BindVertexArray(VAO)
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)
