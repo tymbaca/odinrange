@@ -9,10 +9,13 @@ import rl "vendor:raylib"
 import "core:math"
 import "core:time"
 import "shader/program"
+import "core:image"
 
 init :: proc() -> (ok: bool) {
     fmt.println("OpenGL Version: ", gl.GetString(gl.VERSION))
     fmt.println("GLSL Version: ", gl.GetString(gl.SHADING_LANGUAGE_VERSION))
+
+    // img := image.load_from_file("resourses/wall.jpg") or_return
 
     PROGRAM = program.new(VERTEX_SHADER, FRAGMENT_SHADER) or_return
 
@@ -24,16 +27,19 @@ init :: proc() -> (ok: bool) {
          0.5, 0.5, 0,  0.0, 0.0, 0.7, 0.5, // 2 right up
          0.5,-0.5, 0,  0.0, 0.0, 0.0, 0.5, // 3 right down
 
-         0.6,   0, 0,  0.7, 0.0, 0.0, 0.5,
-         0.6, 0.4, 0,  0.0, 0.7, 0.0, 0.5,
-         0.9,   0, 0,  0.0, 0.0, 0.7, 0.5,
+         0.6,   0, 0,  0.7, 0.0, 0.0, 0.5, // 4
+         0.6, 0.4, 0,  0.0, 0.7, 0.0, 0.5, // 5
+         0.9,   0, 0,  0.0, 0.0, 0.7, 0.5, // 6
+
+         0,0.5, 0,  0.5, 0.5, 0.5, 0.5, // 7 up
     }
     stride :: 7*size_of(f32)
 
     indices := []u32{
-        0, 1, 2,
-        0, 2, 3,
-        4, 5, 6,
+        // 0, 1, 2,
+        // 0, 2, 3,
+        // 4, 5, 6,
+        0, 7, 3,
     }
 
     gl.GenVertexArrays(1, &VAO)

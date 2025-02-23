@@ -28,30 +28,19 @@ use :: proc(p: Program) {
 	gl.UseProgram(p.id)
 }
 
-set :: proc{ set_float, set_vec2f, set_vec3f, set_vec4f,  }
-
-set_float :: proc(p: Program, name: string, val: f32) {
+set :: proc(p: Program, name: string, val: $T) {
 	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
 	defer free_all(context.temp_allocator)
-    gl.Uniform1f(loc, val)
-}
 
-set_vec2f :: proc(p: Program, name: string, val: [2]f32) {
-	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
-	defer free_all(context.temp_allocator)
-    gl.Uniform2f(loc, val.x, val.y)
-}
-
-set_vec3f :: proc(p: Program, name: string, val: [3]f32) {
-	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
-	defer free_all(context.temp_allocator)
-    gl.Uniform3f(loc, val.x, val.y, val.z)
-}
-
-set_vec4f :: proc(p: Program, name: string, val: [4]f32) {
-	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
-	defer free_all(context.temp_allocator)
-    gl.Uniform4f(loc, val.x, val.y, val.z, val.w)
+    when T == f32 {
+        gl.Uniform1f(loc, val)
+    } else when T == [2]f32 {
+        gl.Uniform2f(loc, val.x, val.y)
+    } else when T == [3]f32 {
+        gl.Uniform3f(loc, val.x, val.y, val.z)
+    } else when T == [4]f32 {
+        gl.Uniform4f(loc, val.x, val.y, val.z, val.w)
+    }
 }
 
 shader_from_filename :: proc(
