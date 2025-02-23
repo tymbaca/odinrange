@@ -8,6 +8,7 @@ uniform float globalScale;
 
 out vec4 color;
 out vec2 uv;
+out float factor;
 
 void main()
 {
@@ -15,4 +16,5 @@ void main()
     gl_Position = vec4(modPos.x, modPos.y, modPos.z, 1.0);
     color = aColor;
     uv = aUV;
+    factor = scale;
 }

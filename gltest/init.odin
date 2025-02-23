@@ -16,15 +16,12 @@ init :: proc() -> (ok: bool) {
 	fmt.println("OpenGL Version: ", gl.GetString(gl.VERSION))
 	fmt.println("GLSL Version: ", gl.GetString(gl.SHADING_LANGUAGE_VERSION))
 
-	img, err := image.load_from_file("resources/wall.png")
-	if err != nil {
-		fmt.println(err)
-		return false
-	}
-	defer image.destroy(img)
+	wall_texture := program.load_texture("resources/wall.png") or_return
+	// if err != nil {
+	// 	fmt.println(err)
+	// 	return false
+	// }
 
-	wall_texture: u32
-	gl.GenTextures(1, &wall_texture)
 	gl.BindTexture(gl.TEXTURE_2D, wall_texture)
 
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
