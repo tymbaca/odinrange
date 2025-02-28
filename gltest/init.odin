@@ -78,6 +78,7 @@ init :: proc() -> (ok: bool) {
 
     program.use(PROGRAM)
     program.set(PROGRAM, "ourTexture1", i32(0))
+    
 
 	return true
 }

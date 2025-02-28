@@ -18,7 +18,7 @@ draw :: proc() {
 	gl.Clear(gl.COLOR_BUFFER_BIT)
 
 
-    gl.ActiveTexture(0)
+    gl.ActiveTexture(gl.TEXTURE0)
     gl.BindTexture(gl.TEXTURE_2D, TEXTURES[0].id)
     // gl.ActiveTexture(1)
     // gl.BindTexture(gl.TEXTURE_2D, TEXTURES[1].id)
@@ -27,9 +27,9 @@ draw :: proc() {
 
     factor := math.sin(time.duration_seconds(time.since(START)))
 
-    color: [4]f32
-    color.r = auto_cast (factor + 1) * 0.5
-    program.set(PROGRAM, "color", color)
+    // color: [4]f32
+    // color.r = auto_cast (factor + 1) * 0.5
+    // program.set(PROGRAM, "color", color)
     program.set(PROGRAM, "globalScale", f32(factor))
 
     gl.BindVertexArray(VAO)
