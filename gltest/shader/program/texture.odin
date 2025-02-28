@@ -12,7 +12,7 @@ Texture :: struct {
 }
 
 load_texture :: proc(path: string, generate_mipmap := true) -> (texture: Texture, ok: bool) {
-	img, err := image.load_from_file("resources/wall.png")
+	img, err := image.load_from_file(path)
 	if err != nil {
         log.error(err)
 		return {}, false
