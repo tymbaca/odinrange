@@ -1,6 +1,7 @@
 package program
 
 import "core:image"
+import "core:image/png"
 import "core:log"
 import gl "vendor:OpenGL"
 
@@ -10,7 +11,7 @@ Texture :: struct {
 	height: int,
 }
 
-load_texture :: proc(path: string, generate_mipmap := false) -> (texture: Texture, ok: bool) {
+load_texture :: proc(path: string, generate_mipmap := true) -> (texture: Texture, ok: bool) {
 	img, err := image.load_from_file("resources/wall.png")
 	if err != nil {
         log.error(err)
@@ -20,7 +21,6 @@ load_texture :: proc(path: string, generate_mipmap := false) -> (texture: Textur
 
 	texture_id: u32
 	gl.GenTextures(1, &texture_id)
-
 	gl.BindTexture(gl.TEXTURE_2D, texture_id)
 
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
