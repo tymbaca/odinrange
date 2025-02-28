@@ -10,5 +10,5 @@ load_texture :: proc(path: string) -> (obj: u32, err: image.Error) {
 	texture: u32
 	gl.GenTextures(1, &texture)
 
-    return texture
+    return texture, nil
 }
