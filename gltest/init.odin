@@ -16,21 +16,8 @@ init :: proc() -> (ok: bool) {
 	fmt.println("OpenGL Version: ", gl.GetString(gl.VERSION))
 	fmt.println("GLSL Version: ", gl.GetString(gl.SHADING_LANGUAGE_VERSION))
 
-	wall_texture := program.load_texture("resources/wall.png") or_return
-	// if err != nil {
-	// 	fmt.println(err)
-	// 	return false
-	// }
-
-	gl.BindTexture(gl.TEXTURE_2D, wall_texture)
-
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-
-	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGB, auto_cast img.width, auto_cast img.height, 0, gl.RGB, gl.UNSIGNED_BYTE, raw_data(img.pixels.buf))
-	gl.GenerateMipmap(gl.TEXTURE_2D)
+	TEXTURES[0] = program.load_texture("resources/wall.png") or_return
+	// TEXTURES[1] = program.load_texture("resources/container.png") or_return
 
 	PROGRAM = program.new(VERTEX_SHADER, FRAGMENT_SHADER) or_return
 
@@ -88,6 +75,9 @@ init :: proc() -> (ok: bool) {
 	// gl.BindVertexArray(0)
 
 	// gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
+
+    program.use(PROGRAM)
+    program.set(PROGRAM, "ourTexture1", i32(0))
 
 	return true
 }

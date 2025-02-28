@@ -1,14 +1,42 @@
 package program
 
 import "core:image"
+import "core:log"
 import gl "vendor:OpenGL"
 
-load_texture :: proc(path: string) -> (obj: u32, err: image.Error) {
-	img := image.load_from_file("resources/wall.png") or_return
+Texture :: struct {
+	id:     u32,
+	width:  int,
+	height: int,
+}
+
+load_texture :: proc(path: string, generate_mipmap := false) -> (texture: Texture, ok: bool) {
+	img, err := image.load_from_file("resources/wall.png")
+	if err != nil {
+        log.error(err)
+		return {}, false
+	}
 	defer image.destroy(img)
 
-	texture: u32
-	gl.GenTextures(1, &texture)
+	texture_id: u32
+	gl.GenTextures(1, &texture_id)
 
-    return texture
+	gl.BindTexture(gl.TEXTURE_2D, texture_id)
+
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+
+	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGB, auto_cast img.width, auto_cast img.height, 0, gl.RGB, gl.UNSIGNED_BYTE, raw_data(img.pixels.buf))
+
+    if generate_mipmap {
+        gl.GenerateMipmap(gl.TEXTURE_2D)
+    }
+
+	return {
+        id = texture_id,
+        width = img.width,
+        height = img.height,
+    }, true
 }
