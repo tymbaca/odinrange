@@ -20,8 +20,8 @@ draw :: proc() {
 
     gl.ActiveTexture(gl.TEXTURE0)
     gl.BindTexture(gl.TEXTURE_2D, TEXTURES[0].id)
-    // gl.ActiveTexture(1)
-    // gl.BindTexture(gl.TEXTURE_2D, TEXTURES[1].id)
+    gl.ActiveTexture(gl.TEXTURE1)
+    gl.BindTexture(gl.TEXTURE_2D, TEXTURES[1].id)
 
     program.use(PROGRAM)
 

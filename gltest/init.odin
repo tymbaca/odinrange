@@ -17,7 +17,7 @@ init :: proc() -> (ok: bool) {
 	fmt.println("GLSL Version: ", gl.GetString(gl.SHADING_LANGUAGE_VERSION))
 
 	TEXTURES[0] = program.load_texture("resources/wall.png") or_return
-	// TEXTURES[1] = program.load_texture("resources/container.png") or_return
+	TEXTURES[1] = program.load_texture("resources/container.png") or_return
 
 	PROGRAM = program.new(VERTEX_SHADER, FRAGMENT_SHADER) or_return
 
@@ -78,6 +78,7 @@ init :: proc() -> (ok: bool) {
 
     program.use(PROGRAM)
     program.set(PROGRAM, "ourTexture1", i32(0))
+    program.set(PROGRAM, "ourTexture2", i32(1))
     
 
 	return true
