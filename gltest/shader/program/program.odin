@@ -28,9 +28,8 @@ use :: proc(p: Program) {
 	gl.UseProgram(p.id)
 }
 
-set :: proc(p: Program, name: string, val: $T) {
-	loc := gl.GetUniformLocation(p.id, strings.clone_to_cstring(name, context.temp_allocator))
-	defer free_all(context.temp_allocator)
+set :: proc(p: Program, name: cstring, val: $T) {
+	loc := gl.GetUniformLocation(p.id, name)
 
     when T == f32 {
         gl.Uniform1f(loc, val)
@@ -40,6 +39,8 @@ set :: proc(p: Program, name: string, val: $T) {
         gl.Uniform3f(loc, val.x, val.y, val.z)
     } else when T == [4]f32 {
         gl.Uniform4f(loc, val.x, val.y, val.z, val.w)
+    } else when T == i32 {
+        gl.Uniform1i(loc, val)
     }
 }
 
