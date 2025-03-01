@@ -11,12 +11,5 @@ uniform sampler2D ourTexture2;
 
 void main()
 {
-    if (factor < 0.5) 
-    {
-        FragColor = texture(ourTexture1, uv);
-    } 
-    else 
-    {
-        FragColor = texture(ourTexture2, uv);
-    }
+    FragColor = mix(texture(ourTexture1, uv), texture(ourTexture2, uv), 0.5);
 }

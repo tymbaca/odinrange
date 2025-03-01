@@ -25,7 +25,13 @@ _running: b32 = true
 VAO: u32
 VBO: u32
 EBO: u32
-TEXTURES: [1024]program.Texture
+TEXTURES: [TextureKind]program.Texture
+
+TextureKind :: enum {
+    wall,
+    container,
+    awesomeface,
+}
 
 START := time.now()
 

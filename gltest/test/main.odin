@@ -5,21 +5,32 @@ import "core:fmt"
 import "core:image"
 import "core:image/png"
 import "core:bytes"
+import "core:testing"
 import rl "vendor:raylib"
 
-main :: proc() {
-    img, ierr := image.load_from_file("resources/wall.png", {.alpha_add_if_missing})
-    if ierr != nil {
-        fmt.println(ierr)
-        return
+@(test)
+main_test :: proc(t: ^testing.T) {
+    {
+        paths := make([]string, 3)
+        paths = []string{"resources/wall.png", "resources/container.png", "resources/awesomeface.png"}
+        for path, i in paths {
+            fmt.println(path)
+        }
     }
 
-    b: [12]byte
-    n, rerr := bytes.buffer_read(&img.pixels, b[:])
-    if rerr != nil {
-        fmt.println(rerr)
-        return 
+    {
+        wall := "resources/wall.png"
+        container := "resources/container.png"
+        awesomeface := "resources/awesomeface.png"
+        paths := []string{wall, container, awesomeface}
+        for path, i in paths {
+            fmt.println(path)
+        }
     }
-    
-    fmt.println(b)
+
+    // {
+    //     for path, i in []string{"resources/wall.png", "resources/container.png", "resources/awesomeface.png"} {
+    //         fmt.println(path)
+    //     }
+    // }
 }

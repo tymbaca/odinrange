@@ -19,13 +19,14 @@ draw :: proc() {
 
 
     gl.ActiveTexture(gl.TEXTURE0)
-    gl.BindTexture(gl.TEXTURE_2D, TEXTURES[0].id)
+    gl.BindTexture(gl.TEXTURE_2D, TEXTURES[.wall].id)
     gl.ActiveTexture(gl.TEXTURE1)
-    gl.BindTexture(gl.TEXTURE_2D, TEXTURES[1].id)
+    gl.BindTexture(gl.TEXTURE_2D, TEXTURES[.awesomeface].id)
 
     program.use(PROGRAM)
 
-    factor := math.sin(time.duration_seconds(time.since(START)))
+    // factor := math.sin(time.duration_seconds(time.since(START)))
+    factor := 1
 
     // color: [4]f32
     // color.r = auto_cast (factor + 1) * 0.5

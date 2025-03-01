@@ -16,21 +16,22 @@ init :: proc() -> (ok: bool) {
 	fmt.println("OpenGL Version: ", gl.GetString(gl.VERSION))
 	fmt.println("GLSL Version: ", gl.GetString(gl.SHADING_LANGUAGE_VERSION))
 
-	TEXTURES[0] = program.load_texture("resources/wall.png") or_return
-	TEXTURES[1] = program.load_texture("resources/container.png") or_return
+    TEXTURES[.wall]        = program.load_texture("resources/wall.png") or_return
+    TEXTURES[.container]   = program.load_texture("resources/container.png") or_return
+    TEXTURES[.awesomeface] = program.load_texture("resources/awesomeface.png") or_return
 
 	PROGRAM = program.new(VERTEX_SHADER, FRAGMENT_SHADER) or_return
 
 	// Own drawing code here
 	vs := []Vertex_Attributes {
-        {pos = {-0.5, -0.5, 0}, color = {0.7, 0.0, 0.0}, uv = {0, 0}, scale = 0.5}, // 0 left down
-	    {pos = {-0.5, 0.5, 0},  color = {0.0, 0.7, 0.0}, uv = {0, 1}, scale = 0.5}, // 1 left up
-	    {pos = {0.5, 0.5, 0},   color = {0.0, 0.0, 0.7}, uv = {1, 1}, scale = 0.5}, // 2 right up
-	    {pos = {0.5, -0.5, 0},  color = {0.0, 0.0, 0.0}, uv = {1, 0}, scale = 0.5}, // 3 right down
-	    {pos = {0.6, 0, 0},     color = {0.7, 0.0, 0.0}, uv = {0, 0}, scale = 0.5}, // 4
-	    {pos = {0.6, 0.4, 0},   color = {0.0, 0.7, 0.0}, uv = {0, 0}, scale = 0.5}, // 5
-	    {pos = {0.9, 0, 0},     color = {0.0, 0.0, 0.7}, uv = {0, 0}, scale = 0.5}, // 6
-	    {pos = {0, 0.5, 0},     color = {0.5, 0.5, 0.5}, uv = {0, 0}, scale = 0.5}, // 7 up
+        {pos = {-0.5, -0.5, 0}, color = {0.7, 0.0, 0.0}, uv = {0, 0}, scale = 1}, // 0 left down
+	    {pos = {-0.5, 0.5, 0},  color = {0.0, 0.7, 0.0}, uv = {0, 1}, scale = 1}, // 1 left up
+	    {pos = {0.5, 0.5, 0},   color = {0.0, 0.0, 0.7}, uv = {1, 1}, scale = 1}, // 2 right up
+	    {pos = {0.5, -0.5, 0},  color = {0.0, 0.0, 0.0}, uv = {1, 0}, scale = 1}, // 3 right down
+	    {pos = {0.6, 0, 0},     color = {0.7, 0.0, 0.0}, uv = {0, 0}, scale = 1}, // 4
+	    {pos = {0.6, 0.4, 0},   color = {0.0, 0.7, 0.0}, uv = {0, 0}, scale = 1}, // 5
+	    {pos = {0.9, 0, 0},     color = {0.0, 0.0, 0.7}, uv = {0, 0}, scale = 1}, // 6
+	    {pos = {0, 0.5, 0},     color = {0.5, 0.5, 0.5}, uv = {0, 0}, scale = 1}, // 7 up
 	}
 	stride :: size_of(Vertex_Attributes)
     fmt.println("attr size ", size_of(Vertex_Attributes))
