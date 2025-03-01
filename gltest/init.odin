@@ -25,13 +25,13 @@ init :: proc() -> (ok: bool) {
 	// Own drawing code here
 	vs := []Vertex_Attributes {
         {pos = {-0.5, -0.5, 0}, color = {0.7, 0.0, 0.0}, uv = {0, 0}, scale = 1}, // 0 left down
-	    {pos = {-0.5, 0.5, 0},  color = {0.0, 0.7, 0.0}, uv = {0, 1}, scale = 1}, // 1 left up
-	    {pos = {0.5, 0.5, 0},   color = {0.0, 0.0, 0.7}, uv = {1, 1}, scale = 1}, // 2 right up
-	    {pos = {0.5, -0.5, 0},  color = {0.0, 0.0, 0.0}, uv = {1, 0}, scale = 1}, // 3 right down
-	    {pos = {0.6, 0, 0},     color = {0.7, 0.0, 0.0}, uv = {0, 0}, scale = 1}, // 4
-	    {pos = {0.6, 0.4, 0},   color = {0.0, 0.7, 0.0}, uv = {0, 0}, scale = 1}, // 5
-	    {pos = {0.9, 0, 0},     color = {0.0, 0.0, 0.7}, uv = {0, 0}, scale = 1}, // 6
-	    {pos = {0, 0.5, 0},     color = {0.5, 0.5, 0.5}, uv = {0, 0}, scale = 1}, // 7 up
+	    {pos = {-0.5,  0.5, 0}, color = {0.0, 0.7, 0.0}, uv = {0, 1}, scale = 1}, // 1 left up
+	    {pos = { 0.5,  0.5, 0}, color = {0.0, 0.0, 0.7}, uv = {1, 1}, scale = 1}, // 2 right up
+	    {pos = { 0.5, -0.5, 0}, color = {0.0, 0.0, 0.0}, uv = {1, 0}, scale = 1}, // 3 right down
+	    {pos = { 0.6,  0.0, 0}, color = {0.7, 0.0, 0.0}, uv = {0, 0}, scale = 1}, // 4
+	    {pos = { 0.6,  0.4, 0}, color = {0.0, 0.7, 0.0}, uv = {0, 0}, scale = 1}, // 5
+	    {pos = { 0.9,  0.0, 0}, color = {0.0, 0.0, 0.7}, uv = {0, 0}, scale = 1}, // 6
+	    {pos = { 0.0,  0.5, 0}, color = {0.5, 0.5, 0.5}, uv = {0, 0}, scale = 1}, // 7 up
 	}
 	stride :: size_of(Vertex_Attributes)
     fmt.println("attr size ", size_of(Vertex_Attributes))
