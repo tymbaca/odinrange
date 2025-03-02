@@ -1,2 +1,2 @@
 run:
-	odin run . -out:ui.bin
+	odin run test -out:ui.bin
