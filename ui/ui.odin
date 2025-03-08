@@ -40,10 +40,16 @@ render :: proc(ctx: Context) {
 draw_container :: proc(ctx: Context, container: Container) {
     ctx.drawer.rect(ctx.origin, {container.size.width, container.size.height}, container.color, container.roundness, 10)
 
+    ctx := ctx
+    ctx.origin += container.padding.xy
     for child, i in container.children {
-        child_ctx := ctx
-        child_ctx.origin.x += 20 * auto_cast i
-        draw_container(child_ctx, child)
+        draw_container(ctx, child)
+        switch container.direction {
+        case .horisontal:
+            ctx.origin.x += child.size.width + container.gap
+        case .vertical:
+            ctx.origin.y += child.size.height + container.gap
+        }
     }
 }
 

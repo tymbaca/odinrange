@@ -1,5 +1,6 @@
 package main
 
+import "core:fmt"
 import ".."
 import "../draw"
 import draw_gl "../draw/gl"
@@ -15,7 +16,7 @@ main :: proc() {
         color = auto_cast rl.WHITE,
         padding = {20, 20, 20, 20},
         gap = 20,
-        roundness = 20,
+        roundness = 0,
         children = {
             {
                 size = {50, 50},
@@ -38,7 +39,20 @@ main :: proc() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.BLACK)
 
+        if rl.IsKeyReleased(.D) {
+            ctx.root.gap += 1
+        }
+        if rl.IsKeyReleased(.A) {
+            ctx.root.gap -= 1
+        }
+        if rl.IsKeyReleased(.H) {
+            ctx.root.direction = .horisontal
+        }
+        if rl.IsKeyReleased(.V) {
+            ctx.root.direction = .vertical
+        }
         ui.render(ctx)
+        fmt.println(root.gap)
 
 		rl.EndDrawing()
 	}

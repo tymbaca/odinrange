@@ -19,7 +19,7 @@ rect :: proc(pos, size: [2]i32, color: [4]u8, roundness: i32 = 0, segments: i32 
 	rl.DrawRectangleRounded(
 		rl.Rectangle{x = f32(pos.x), y = f32(pos.y), width = f32(size.x), height = f32(size.y)},
 		f32(roundness),
-		90,
+		segments,
 		auto_cast color,
 	)
 }

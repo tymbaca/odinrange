@@ -1,2 +1,2 @@
 run:
-	odin run gltest
+	odin run test
