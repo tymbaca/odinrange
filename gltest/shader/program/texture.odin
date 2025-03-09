@@ -12,7 +12,7 @@ Texture :: struct {
 }
 
 load_texture :: proc(path: string, generate_mipmap := true) -> (texture: Texture, ok: bool) {
-	img, err := image.load_from_file(path)
+	img, err := image.load_from_file(path, {.alpha_add_if_missing})
 	if err != nil {
         log.error(err)
 		return {}, false
@@ -28,7 +28,7 @@ load_texture :: proc(path: string, generate_mipmap := true) -> (texture: Texture
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 
-	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGB, auto_cast img.width, auto_cast img.height, 0, gl.RGB, gl.UNSIGNED_BYTE, raw_data(img.pixels.buf))
+	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGB, auto_cast img.width, auto_cast img.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, raw_data(img.pixels.buf))
 
     if generate_mipmap {
         gl.GenerateMipmap(gl.TEXTURE_2D)
