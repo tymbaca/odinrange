@@ -44,12 +44,7 @@ set :: proc(p: Program, name: cstring, val: $T) {
     } else when T == i32 {
         gl.Uniform1i(loc, val)
     } else when T == matrix[4,4]f32 {
-        ptr := cast([^]f32)(&val)
-        for i in 0..<16 {
-            fmt.print(ptr[i], ", ")
-        }
-        fmt.println()
-        gl.UniformMatrix4fv(loc, 1, false, ptr)
+        gl.UniformMatrix4fv(loc, 1, true, cast([^]f32)(&val))
     }
 }
 
