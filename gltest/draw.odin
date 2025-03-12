@@ -7,6 +7,7 @@ import "vendor:glfw"
 import "base:runtime"
 import rl "vendor:raylib"
 import "core:math"
+import "core:math/linalg"
 import "core:time"
 import "shader/program"
 
@@ -32,6 +33,12 @@ draw :: proc() {
     // color.r = auto_cast (factor + 1) * 0.5
     // program.set(PROGRAM, "color", color)
     program.set(PROGRAM, "globalScale", f32(factor))
+
+    transform := linalg.identity_matrix(mat4)
+    // transform = linalg.matrix4_scale_f32(vec3{0.5,0.5,0.5}) * transform
+    // transform = linalg.matrix4_rotate_f32(90*RAD_PER_DEG, vec3{0,0,1}) * transform
+    // transform = linalg.matrix4_translate_f32(vec3{0,-0.2,0}) * transform
+    program.set(PROGRAM, "transform", transform)
 
     gl.BindVertexArray(VAO)
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO)

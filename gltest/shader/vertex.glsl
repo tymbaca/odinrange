@@ -5,6 +5,7 @@ layout (location = 2) in vec2 aUV;
 layout (location = 3) in float scale;
 
 uniform float globalScale;
+uniform mat4 tranform;
 
 out vec4 color;
 out vec2 uv;
@@ -13,7 +14,8 @@ out float factor;
 void main()
 {
     vec3 modPos = pos * scale * globalScale;
-    gl_Position = vec4(modPos.x, modPos.y, modPos.z, 1.0);
+    gl_Position = tranform * vec4(modPos, 1.0);
+    // gl_Position = vec4(modPos, 1.0);
     color = aColor;
     uv = aUV;
     factor = globalScale;

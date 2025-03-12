@@ -1,5 +1,6 @@
 package program
 
+import "core:math/linalg"
 import "core:fmt"
 import "core:os"
 import "core:strings"
@@ -29,6 +30,7 @@ use :: proc(p: Program) {
 }
 
 set :: proc(p: Program, name: cstring, val: $T) {
+    val := val
 	loc := gl.GetUniformLocation(p.id, name)
 
     when T == f32 {
@@ -41,6 +43,8 @@ set :: proc(p: Program, name: cstring, val: $T) {
         gl.Uniform4f(loc, val.x, val.y, val.z, val.w)
     } else when T == i32 {
         gl.Uniform1i(loc, val)
+    } else when T == matrix[4,4]f32 {
+        gl.UniformMatrix4fv(loc, 1, false, cast([^]f32)(&val))
     }
 }
 
